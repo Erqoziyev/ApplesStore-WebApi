@@ -1,6 +1,5 @@
 ﻿using AppleStore.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
-using System.Security.Principal;
 
 namespace AppleStore.Domain.Entities.Users;
 

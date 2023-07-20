@@ -1,7 +1,6 @@
-﻿using AppleStore.Domain.Entities.Categories;
+﻿using AppleStore.DataAccess.Utils;
 using AppleStore.Service.Dtos.Categories;
 using AppleStore.Service.Interfaces.Categories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppleStore.WebApi.Controllers;
@@ -11,26 +10,33 @@ namespace AppleStore.WebApi.Controllers;
 public class CategoriesController : ControllerBase
 {
     private readonly ICategoryService _service;
+    private readonly int maxPageSize = 30;
 
     public CategoriesController(ICategoryService service)
     {
         this._service = service;
     }
+    [HttpGet]
+    public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
+        => Ok(await _service.GetAllAsync(new PaginationParams(page, maxPageSize)));
+
+    [HttpGet("{categoryId}")]
+    public async Task<IActionResult> GetByIdAsync(long categoryId)
+    => Ok(await _service.GetByIdAsync(categoryId));
+
 
     [HttpGet("count")]
     public async Task<IActionResult> CountAsync()
        => Ok(await _service.CountAsync());
 
 
-    [HttpGet("{categoryId}")]
-    public async Task<IActionResult> GetByIdAsync(long categoryId)
-    => Ok();
-
-
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromForm] CategoryCreateDto dto)
         => Ok(await _service.CreatAsync(dto));
 
+    [HttpPut("{categoryId}")]
+    public async Task<IActionResult> UpdateAsync(long categoryId, [FromForm] CategoryUpdateDto dto)
+        => Ok(await _service.UpdateAsync(categoryId, dto));
 
 
     [HttpDelete("{categoryId}")]

@@ -2,7 +2,6 @@
 using AppleStore.DataAccess.Utils;
 using AppleStore.Domain.Entities.Categories;
 using Dapper;
-using System.Data.Common;
 
 namespace AppleStore.DataAccess.Repositories.Categories;
 
@@ -75,7 +74,7 @@ public class CategoryRepository : BaseRepository, ICategoryRepository
             await _connection.OpenAsync();
 
             string query = $"SELECT * FROM categories order by id desc " +
-                $"offset {@params.SkipCount} limit {@params.PageSize}";
+                $"offset {@params.SkipCount()} limit {@params.PageSize}";
 
             var result = (await _connection.QueryAsync<Category>(query)).ToList();
             return result;
@@ -91,7 +90,7 @@ public class CategoryRepository : BaseRepository, ICategoryRepository
     }
 
     public async Task<Category> GetByIdAsync(long id)
-    { 
+    {
         try
         {
             await _connection.OpenAsync();
@@ -109,8 +108,25 @@ public class CategoryRepository : BaseRepository, ICategoryRepository
         }
     }
 
-    public Task<int> UpdateAsync(long id, Category entity)
+    public async Task<int> UpdateAsync(long id, Category entity)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _connection.OpenAsync();
+            string query = $"UPDATE public.categories " +
+                $"SET name=@Name, description=@Description, image_path=@ImagePath, created_at=@CreatedAt, updated_at=@UpdatedAt " +
+                $"WHERE id={id};";
+
+            var result = await _connection.ExecuteAsync(query, entity);
+            return result;
+        }
+        catch 
+        {
+            return 0;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
     }
 }

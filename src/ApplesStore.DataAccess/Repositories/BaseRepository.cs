@@ -15,5 +15,5 @@ public class BaseRepository
             "Database = apples-store-db;" +
             "User Id = postgres;" +
             "Password = 0809");
-    } 
+    }
 }

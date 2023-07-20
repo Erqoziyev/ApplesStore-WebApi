@@ -1,4 +1,3 @@
-Imports System
 Imports Xunit
 
 Namespace AppleStore.UnitTest

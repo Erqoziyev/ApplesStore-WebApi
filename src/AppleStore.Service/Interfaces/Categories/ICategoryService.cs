@@ -15,4 +15,6 @@ public interface ICategoryService
     public Task<IList<Category>> GetAllAsync(PaginationParams @params);
 
     public Task<Category> GetByIdAsync(long categoryId);
+
+    public Task<bool> UpdateAsync(long categoryId, CategoryUpdateDto dto);
 }

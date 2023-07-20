@@ -1,7 +1,7 @@
 ﻿using AppleStore.Service.Common.Helpers;
 using AppleStore.Service.Interfaces.Common;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 
 namespace AppleStore.Service.Services.Common;
