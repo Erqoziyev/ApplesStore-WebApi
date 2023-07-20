@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AppleStore.DataAccess.Common.Interfaces;
+using AppleStore.Domain.Entities.Discounts;
 
-namespace AppleStore.DataAccess.Interfaces.Discounts
+namespace AppleStore.DataAccess.Interfaces.Discounts;
+
+public interface IDiscountRepository : IRepository<Discount, Discount>, IGetAll<Discount>
 {
-    internal class IDiscountRepository
-    {
-    }
 }

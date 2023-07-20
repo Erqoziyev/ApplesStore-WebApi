@@ -10,5 +10,5 @@ public interface IRepository<TEntity, TViewModel>
 
     public Task<TEntity> GetByIdAsync(long id);
 
-    public Task<long> Count();
+    public Task<long> CountAsync();
 }
