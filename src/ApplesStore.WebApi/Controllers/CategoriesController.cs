@@ -1,7 +1,8 @@
 ﻿using AppleStore.DataAccess.Utils;
 using AppleStore.Service.Dtos.Categories;
 using AppleStore.Service.Interfaces.Categories;
-using Microsoft.AspNetCore.Mvc;
+using AppleStore.Service.Validators.Dtos.Categories;
+using FluentValidation;using Microsoft.AspNetCore.Mvc;
 
 namespace AppleStore.WebApi.Controllers;
 
@@ -32,12 +33,21 @@ public class CategoriesController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromForm] CategoryCreateDto dto)
-        => Ok(await _service.CreatAsync(dto));
+    {
+        var createValidator = new CategoryCreateValidator();
+        var result = createValidator.Validate(dto);
+        if (result.IsValid) return Ok(await _service.CreatAsync(dto));
+        else return BadRequest(result.Errors);
+    }
 
     [HttpPut("{categoryId}")]
     public async Task<IActionResult> UpdateAsync(long categoryId, [FromForm] CategoryUpdateDto dto)
-        => Ok(await _service.UpdateAsync(categoryId, dto));
-
+    {
+        var updateValidator = new CategoryUpdateValidator();
+        var result = updateValidator.Validate(dto);
+        if (result.IsValid) return Ok(await _service.UpdateAsync(categoryId, dto));
+        else return BadRequest(result.Errors);
+    }
 
     [HttpDelete("{categoryId}")]
     public async Task<IActionResult> DeleteAsync(long categoryId)

@@ -1,5 +1,12 @@
-﻿namespace AppleStore.Service.Dtos.Categories; 
+﻿using Microsoft.AspNetCore.Http;
 
-public class CategoryUpdateDto : CategoryCreateDto
+namespace AppleStore.Service.Dtos.Categories; 
+
+public class CategoryUpdateDto
 {
+    public string Name { get; set; } = string.Empty;
+
+    public string Description { get; set; } = string.Empty;
+
+    public IFormFile? Image { get; set; }
 }
