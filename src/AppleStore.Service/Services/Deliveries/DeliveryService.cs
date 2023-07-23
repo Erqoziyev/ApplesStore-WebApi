@@ -62,4 +62,29 @@ public class DeliveryService : IDeliveryService
         if (delivery is null) throw new DeliveryNotFoundException();
         else return delivery;
     }
+
+    public async Task<bool> UpdateAsync(long deliveryId, DeliveryUpdateDto dto)
+    {
+        var delivery = await _repository.GetByIdAsync(deliveryId);
+        if (delivery is null) throw new DeliveryNotFoundException();
+
+        delivery.FirstName = dto.FirstName;
+        delivery.LastName = dto.LastName;
+        delivery.PhoneNumber = dto.PhoneNumber;
+        delivery.PassportSeriaNumber = dto.PassportSeriaNumber;
+        delivery.Region = dto.Region;
+        delivery.BirthDate = dto.BirthDate;
+        delivery.IsMale = dto.IsMale;
+
+        if (dto.Avatar is not null)
+        {
+            await _fileservice.DeleteImageAsync(delivery.ImagePath);
+            delivery.ImagePath = await _fileservice.UploadImageAsync(dto.Avatar);
+        }
+
+        delivery.UpdatedAt = TimeHelper.GetDateTime();
+
+        var dbresult = await _repository.UpdateAsync(deliveryId, delivery);
+        return dbresult > 0;
+    }
 }

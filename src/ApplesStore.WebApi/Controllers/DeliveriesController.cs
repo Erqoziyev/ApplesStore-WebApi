@@ -36,6 +36,15 @@ public class DeliveriesController : ControllerBase
         else return BadRequest(result.Errors); 
     }
 
+    [HttpPut("{deliveryId}")]
+    public async Task<IActionResult> UpdateAsync(long deliveryId, [FromForm] DeliveryUpdateDto dto)
+    {
+        var validator = new DeliveryUpdateValidator();
+        var result = validator.Validate(dto);
+        if (result.IsValid) return Ok(await _service.UpdateAsync(deliveryId, dto));
+        else return BadRequest(result.Errors);
+    }
+
     [HttpDelete("{deliveryId}")]
     public async Task<IActionResult> DeleteAsync(long deliveryId)
         =>Ok(await _service.DeleteAsync(deliveryId));

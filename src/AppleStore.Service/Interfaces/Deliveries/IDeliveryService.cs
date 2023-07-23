@@ -13,4 +13,6 @@ public interface IDeliveryService
     public Task<Delivery> GetByIdAsync(long deliveryId);
 
     public Task<bool> DeleteAsync(long deliveryId);
+
+    public Task<bool> UpdateAsync(long deliveryId, DeliveryUpdateDto dto);
 }
