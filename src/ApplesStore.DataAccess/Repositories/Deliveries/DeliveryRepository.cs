@@ -1,11 +1,13 @@
-﻿using AppleStore.DataAccess.Interfaces.Categories;
+﻿using AppleStore.DataAccess.Interfaces.Deliveries;
 using AppleStore.DataAccess.Utils;
 using AppleStore.Domain.Entities.Categories;
+using AppleStore.Domain.Entities.Deliveries;
 using Dapper;
+using System.Collections.Generic;
 
-namespace AppleStore.DataAccess.Repositories.Categories;
+namespace AppleStore.DataAccess.Repositories.Deliveries;
 
-public class CategoryRepository : BaseRepository, ICategoryRepository
+public class DeliveryRepository : BaseRepository, IDeliveryRepository
 {
     public async Task<long> CountAsync()
     {
@@ -13,7 +15,7 @@ public class CategoryRepository : BaseRepository, ICategoryRepository
         {
             await _connection.OpenAsync();
 
-            string query = $"SELECT count(*) FROM categories";
+            string query = $"SELECT count(*) FROM deliveries";
 
             var result = await _connection.QuerySingleAsync<long>(query);
             return result;
@@ -28,17 +30,19 @@ public class CategoryRepository : BaseRepository, ICategoryRepository
         }
     }
 
-    public async Task<int> CreateAsync(Category entity)
+    public async Task<int> CreateAsync(Delivery entity)
     {
         try
         {
             await _connection.OpenAsync();
-            string query = "INSERT INTO public.categories(name, image_path, description, created_at, updated_at)" +
-                "VALUES (@Name, @ImagePath, @Description, @CreatedAt, @UpdatedAt);";
+            string query = "INSERT INTO public.deliveries" +
+                "(first_name, last_name, phone_number, passport_seria, is_male, birth_date, region, password_hash, salt, image_path, created_at, updated_at)" +
+                "VALUES (@FirstName, @LastName, @PhoneNumber, @PassportSeria, @IsMale, @BirthDate, @Region, @PasswordHash, @Salt, @ImagePath, @CreatedAt, @UpdatedAt);";
+
             var result = await _connection.ExecuteAsync(query, entity);
             return result;
         }
-        catch
+        catch 
         {
             return 0;
         }
@@ -53,7 +57,7 @@ public class CategoryRepository : BaseRepository, ICategoryRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "DELETE FROM categories WHERE id = @Id";
+            string query = "DELETE FROM deliveries WHERE id = @Id";
             var result = await _connection.ExecuteAsync(query, new { Id = id });
             return result;
         }
@@ -67,21 +71,21 @@ public class CategoryRepository : BaseRepository, ICategoryRepository
         }
     }
 
-    public async Task<IList<Category>> GetAllAsync(PaginationParams @params)
+    public async Task<IList<Delivery>> GetAllAsync(PaginationParams @params)
     {
         try
         {
             await _connection.OpenAsync();
 
-            string query = $"SELECT * FROM categories order by id desc " +
+            string query = $"SELECT * FROM deliveries order by id desc " +
                 $"offset {@params.SkipCount()} limit {@params.PageSize}";
 
-            var result = (await _connection.QueryAsync<Category>(query)).ToList();
+            var result = (await _connection.QueryAsync<Delivery>(query)).ToList();
             return result;
         }
         catch
         {
-            return new List<Category>();
+            return new List<Delivery>();
         }
         finally
         {
@@ -89,13 +93,13 @@ public class CategoryRepository : BaseRepository, ICategoryRepository
         }
     }
 
-    public async Task<Category?> GetByIdAsync(long id)
+    public async Task<Delivery?> GetByIdAsync(long id)
     {
         try
         {
             await _connection.OpenAsync();
-            string query = $"SELECT * FROM categories where id=@Id";
-            var result = await _connection.QuerySingleAsync<Category>(query, new { Id = id });
+            string query = $"SELECT * FROM deliveries Where id=@Id";
+            var result = await _connection.QuerySingleAsync<Delivery>(query, new { Id = id });
             return result;
         }
         catch
@@ -108,19 +112,24 @@ public class CategoryRepository : BaseRepository, ICategoryRepository
         }
     }
 
-    public async Task<int> UpdateAsync(long id, Category entity)
+    public Task<Delivery> GetDeliverAsync(long id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<int> UpdateAsync(long id, Delivery entity)
     {
         try
         {
             await _connection.OpenAsync();
-            string query = $"UPDATE public.categories " +
-                $"SET name=@Name, description=@Description, image_path=@ImagePath, created_at=@CreatedAt, updated_at=@UpdatedAt " +
-                $"WHERE id={id};";
+            string query = $"UPDATE public.deliveries" +
+                           $"SET first_name=@FirstName, last_name=@LastName, phone_number=@PhoneNumber, passport_seria=@PassportSeria, is_male=@IsMale, birth_date=@BirthDate, region=@Region, password_hash=@PasswordHash, salt=@Salt, image_path=@ImagePath, created_at=CreatedAt, updated_at=UpdatedAt" +
+                           $"WHERE id = @Id;";
 
             var result = await _connection.ExecuteAsync(query, entity);
             return result;
         }
-        catch 
+        catch
         {
             return 0;
         }

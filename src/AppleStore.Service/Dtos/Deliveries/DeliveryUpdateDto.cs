@@ -1,16 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
 
-namespace AppleStore.Domain.Entities;
+namespace AppleStore.Service.Dtos.Deliveries;
 
-public abstract class Human : Auditable
+public class DeliveryUpdateDto
 {
-    [MaxLength(50)]
     public string FirstName { get; set; } = string.Empty;
 
-    [MaxLength(50)]
     public string LastName { get; set; } = string.Empty;
 
-    [MaxLength(9)]
+    public string PhoneNumber { get; set; } = string.Empty;
+
     public string PassportSeriaNumber { get; set; } = string.Empty;
 
     public bool IsMale { get; set; }
@@ -19,5 +18,5 @@ public abstract class Human : Auditable
 
     public string Region { get; set; } = string.Empty;
 
-    public string ImagePath { get; set; } = string.Empty;
+    public IFormFile? Avatar { get; set; }
 }

@@ -1,11 +1,10 @@
 ﻿using AppleStore.DataAccess.Common.Interfaces;
-using AppleStore.DataAccess.ViewModels.Deliveries;
 using AppleStore.Domain.Entities.Deliveries;
 
 namespace AppleStore.DataAccess.Interfaces.Deliveries;
 
 public interface IDeliveryRepository : IRepository<Delivery, Delivery>,
-                 IGetAll<DeliverViewModel>
+                 IGetAll<Delivery>
 {
-    public Task<DeliverViewModel> GetDeliverAsync(long id);
+    public Task<Delivery> GetDeliverAsync(long id);
 }
