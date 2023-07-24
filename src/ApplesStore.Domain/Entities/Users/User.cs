@@ -12,5 +12,5 @@ public class User : Human
 
     public string Salt { get; set; } = string.Empty;
 
-    public IdentityRole Role { get; set; }
+    public IdentityRole IdentityRole { get; set; }
 }
