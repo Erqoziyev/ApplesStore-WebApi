@@ -1,6 +1,8 @@
 ﻿using AppleStore.DataAccess.Interfaces.Users;
 using AppleStore.Domain.Exceptions.Users;
+using AppleStore.Service.Common.Helpers;
 using AppleStore.Service.Dtos.Auth;
+using AppleStore.Service.Dtos.Security;
 using AppleStore.Service.Interfaces.Auth;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -35,9 +37,20 @@ public class AuthService : IAuthService
         return (Result: true, CachedMinutes: CACHED_MINUTES_FOR_REGISTER);
     }
 
-    public Task<(bool Result, int CachedVerificationMinutes)> SenderCodeForRegisterAsync(string phone)
+    public async Task<(bool Result, int CachedVerificationMinutes)> SendCodeForRegisterAsync(string phone)
     {
-        throw new NotImplementedException();
+        if(_memoryCache.TryGetValue(phone, out RegistorDto registorDto))
+        {
+            VerificationDto verificationDto = new VerificationDto();
+            verificationDto.Attempt = 0;
+            verificationDto.CreatedAt = TimeHelper.GetDateTime();
+            verificationDto.Code = 0809;
+
+            _memoryCache.Set(phone, verificationDto, TimeSpan.FromMinutes(CACHED_MINUTES_FOR_VERIFICATION)); 
+            
+            return (Result: true, CachedVerificationMinutes: CACHED_MINUTES_FOR_REGISTER);
+        }
+        else throw new UserCacheDataExpiredException();
     }
 
     public Task<(bool Result, string Token)> VerifyRegistorAsync(string phone, int code)

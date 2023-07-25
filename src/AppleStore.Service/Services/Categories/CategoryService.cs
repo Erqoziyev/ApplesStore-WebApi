@@ -7,6 +7,7 @@ using AppleStore.Service.Common.Helpers;
 using AppleStore.Service.Dtos.Categories;
 using AppleStore.Service.Interfaces.Categories;
 using AppleStore.Service.Interfaces.Common;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace AppleStore.Service.Services.Categories;
 
@@ -14,12 +15,15 @@ public class CategoryService : ICategoryService
 {
     private readonly ICategoryRepository _repository;
     private readonly IFileService _fileService;
+    private readonly IMemoryCache _memoryCache;
+    private const int CACHED_SECONDS = 30;
 
     public CategoryService(ICategoryRepository categoryRepository,
-        IFileService fileService)
+        IFileService fileService, IMemoryCache memoryCache)
     {
         this._repository = categoryRepository;
         this._fileService = fileService;
+        this._memoryCache = memoryCache;
     }
 
     public async Task<long> CountAsync() => await _repository.CountAsync();
@@ -59,9 +63,19 @@ public class CategoryService : ICategoryService
 
     public async Task<Category> GetByIdAsync(long categoryId)
     {
-        var category = await _repository.GetByIdAsync(categoryId);
-        if (category is null) throw new CategoryNotFoundException();
-        else return category;
+        if(_memoryCache.TryGetValue(categoryId, out Category cachedCategory))
+        {
+            return cachedCategory;
+        }
+        else
+        {
+            var category = await _repository.GetByIdAsync(categoryId);
+            if (category is null) throw new CategoryNotFoundException();
+
+            _memoryCache.Set(categoryId, category, TimeSpan.FromSeconds(CACHED_SECONDS));
+            return category;
+        }
+        
     }
 
     public async Task<bool> UpdateAsync(long categoryId, CategoryUpdateDto dto)

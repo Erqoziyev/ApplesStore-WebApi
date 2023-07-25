@@ -1,5 +1,6 @@
 ﻿using AppleStore.Service.Dtos.Auth;
 using AppleStore.Service.Interfaces.Auth;
+using AppleStore.Service.Validators;
 using AppleStore.Service.Validators.Dtos.Auth;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,4 +29,15 @@ public class AuthController : ControllerBase
         }
         else return BadRequest(result.Errors);
     }
+
+    [HttpPost("{register/send-code}")]
+    public async Task<IActionResult> SendCodeRegisterAsync(string phone)
+    {
+        var result = PhoneNumberValidator.IsValid(phone);
+        if (result == false) return BadRequest("Phone number is invalid!");
+
+        var serviceResult = await _service.SendCodeForRegisterAsync(phone);
+        return Ok(new {serviceResult.Result, serviceResult.CachedVerificationMinutes});
+    }
+        
 }
