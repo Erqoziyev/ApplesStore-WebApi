@@ -2,7 +2,7 @@
 
 namespace AppleStore.Domain.Exceptions.Users;
 
-public class UserCacheDataExpiredException : ExpiredExeptions
+public class UserCacheDataExpiredException : ExpiredException
 {
     public UserCacheDataExpiredException()
     {
