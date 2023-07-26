@@ -74,7 +74,7 @@ public class AuthService : IAuthService
                 TimeSpan.FromMinutes(CACHED_MINUTES_FOR_VERIFICATION));
 
             SmsMessage smsMessage = new SmsMessage();
-            smsMessage.Title = "Agile Shop";
+            smsMessage.Title = "Apple Store";
             smsMessage.Content = "Your verification code : " + verificationDto.Code;
             smsMessage.Recipent = phone.Substring(1);
 
@@ -128,6 +128,8 @@ public class AuthService : IAuthService
         var hasherResult = PasswordHasher.Hash(registerDto.Password);
         user.PasswordHash = hasherResult.Hash;
         user.Salt = hasherResult.Salt;
+        user.CreatedAt = user.UpdatedAt = TimeHelper.GetDateTime();
+        user.IdentityRole = Domain.Enums.IdentityRole.User;
 
         var dbResult = await _userRepository.CreateAsync(user);
         return dbResult > 0;

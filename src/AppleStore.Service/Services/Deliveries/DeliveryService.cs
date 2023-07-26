@@ -27,7 +27,7 @@ public class DeliveryService : IDeliveryService
         delivery.FirstName = dto.FirstName;
         delivery.LastName = dto.LastName;
         delivery.PhoneNumber = dto.PhoneNumber;
-        delivery.PassportSeriaNumber = dto.PassportSeriaNumber;
+        delivery.PassportSeria = dto.PassportSeriaNumber;
         delivery.Region = dto.Region;
         delivery.BirthDate = dto.BirthDate;
         delivery.IsMale = dto.IsMale;
@@ -71,7 +71,7 @@ public class DeliveryService : IDeliveryService
         delivery.FirstName = dto.FirstName;
         delivery.LastName = dto.LastName;
         delivery.PhoneNumber = dto.PhoneNumber;
-        delivery.PassportSeriaNumber = dto.PassportSeriaNumber;
+        delivery.PassportSeria = dto.PassportSeriaNumber;
         delivery.Region = dto.Region;
         delivery.BirthDate = dto.BirthDate;
         delivery.IsMale = dto.IsMale;

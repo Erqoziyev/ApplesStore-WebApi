@@ -2,6 +2,7 @@
 using AppleStore.Service.Dtos.Deliveries;
 using AppleStore.Service.Interfaces.Deliveries;
 using AppleStore.Service.Validators.Dtos.Deliveries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppleStore.WebApi.Controllers;
@@ -20,14 +21,17 @@ public class DeliveriesController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
         => Ok(await _service.GetAllAsync(new PaginationParams(page, maxPageSize)));
 
     [HttpGet("{deliveryId}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetByIdAsync (long deliveryId)
         =>Ok(await _service.GetByIdAsync(deliveryId));  
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateAsync([FromForm] DeliveryCreateDto dto)
     {
         var validator = new DeliveryCreateValidator();
@@ -37,6 +41,7 @@ public class DeliveriesController : ControllerBase
     }
 
     [HttpPut("{deliveryId}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateAsync(long deliveryId, [FromForm] DeliveryUpdateDto dto)
     {
         var validator = new DeliveryUpdateValidator();
@@ -46,6 +51,7 @@ public class DeliveriesController : ControllerBase
     }
 
     [HttpDelete("{deliveryId}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteAsync(long deliveryId)
         =>Ok(await _service.DeleteAsync(deliveryId));
 }

@@ -2,9 +2,9 @@
 
 namespace AppleStore.Domain.Exceptions;
 
-public class AlreadyExistsException : Exception
+public class AlreadyExistsException : ClientException
 {
-    public HttpStatusCode StatusCode { get; } = HttpStatusCode.NotFound;
+    public override HttpStatusCode StatusCode { get; } = HttpStatusCode.NotFound;
 
-    public string TitleMessage { get; protected set; } = string.Empty;
+    public override string TitleMessage { get; protected set; } = string.Empty;
 }

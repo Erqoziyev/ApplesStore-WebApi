@@ -14,6 +14,9 @@ using AppleStore.Service.Services.Categories;
 using AppleStore.Service.Services.Common;
 using AppleStore.Service.Services.Deliveries;
 using AppleStore.Service.Services.Notifications;
+using AppleStore.WebApi.Configurations;
+using AppleStore.WebApi.Configurations.Layers;
+using AppleStore.WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,19 +27,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddMemoryCache();
+builder.ConfigureJwtAuth();
+builder.ConfigureSwaggerAuth();
+builder.ConfigureCORSPolicy();
+builder.ConfigureDataAccess();
+builder.ConfigureServiceLayer();
 
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-
-builder.Services.AddScoped<IFileService, FileService>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<IDeliveryService, DeliveryService>();
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IPaginator, Paginator>();
-
-builder.Services.AddSingleton<ISmsSender, SmsSender>();
 
 var app = builder.Build();
 
@@ -48,11 +44,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors("AllowAll");
 app.UseStaticFiles();
-
+app.UseMiddleware<ExceptionHandlerMiddleware>();
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

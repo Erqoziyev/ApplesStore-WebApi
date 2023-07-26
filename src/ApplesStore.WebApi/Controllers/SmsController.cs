@@ -1,5 +1,6 @@
 ﻿using AppleStore.Service.Dtos.Notifications;
 using AppleStore.Service.Interfaces.Notifications;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppleStore.WebApi.Controllers;
@@ -16,6 +17,7 @@ public class SmsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> SendAsync([FromBody] SmsMessage message)
     {
         return Ok(await _smsSender.SendAsync(message));

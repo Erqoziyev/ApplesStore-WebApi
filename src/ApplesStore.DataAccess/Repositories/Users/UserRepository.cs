@@ -32,8 +32,8 @@ public class UserRepository : BaseRepository, IUserRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "INSERT INTO public.users(first_name, last_name, phone_number, passport_seria_number, is_male, birth_date, region, password_hash, salt, image_path, identity_role, created_at, updated_at) " +
-                $"VALUES (@FirstName, @LastName, @PhoneNumber, @PassportSeriaNumber, @IsMale, '{entity.BirthDate.Year}-{entity.BirthDate.Month}-{entity.BirthDate.Day}', @Region, @PasswordHash, @Salt, @ImagePath, @Role, @CreatedAt, @UpdatedAt);";
+            string query = "INSERT INTO public.users(first_name, last_name, phone_number, passport_seria, is_male, birth_date, region, password_hash, salt, image_path, identity_role, created_at, updated_at) " +
+                $"VALUES (@FirstName, @LastName, @PhoneNumber, @PassportSeria, @IsMale, '{entity.BirthDate.Year}-{entity.BirthDate.Month}-{entity.BirthDate.Day}', @Region, @PasswordHash, @Salt, @ImagePath, @IdentityRole, @CreatedAt, @UpdatedAt);";
             return await _connection.ExecuteAsync(query, entity);
         }
         catch
