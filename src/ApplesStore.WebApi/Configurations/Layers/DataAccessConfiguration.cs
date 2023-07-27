@@ -1,8 +1,10 @@
 ﻿using AppleStore.DataAccess.Interfaces.Categories;
 using AppleStore.DataAccess.Interfaces.Deliveries;
+using AppleStore.DataAccess.Interfaces.Discounts;
 using AppleStore.DataAccess.Interfaces.Users;
 using AppleStore.DataAccess.Repositories.Categories;
 using AppleStore.DataAccess.Repositories.Deliveries;
+using AppleStore.DataAccess.Repositories.Discounts;
 using AppleStore.DataAccess.Repositories.Users;
 
 namespace AppleStore.WebApi.Configurations.Layers;
@@ -15,5 +17,6 @@ public static class DataAccessConfiguration
         builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
         builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IDiscountRepository,  DiscountsRepository>();
     }
 }
