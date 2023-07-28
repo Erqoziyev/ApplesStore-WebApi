@@ -10,7 +10,7 @@ namespace AppleStore.WebApi.Configurations
             {
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Agile Shop Api",
+                    Title = "Apple Store",
                     Version = "v1"
                 });
 
