@@ -1,6 +1,8 @@
-﻿using AppleStore.DataAccess.Interfaces.Users;
+﻿using AppleStore.DataAccess.Common.Interfaces;
+using AppleStore.DataAccess.Interfaces.Users;
 using AppleStore.DataAccess.Utils;
 using AppleStore.DataAccess.ViewModels.Users;
+using AppleStore.Domain.Entities.Categories;
 using AppleStore.Domain.Entities.Users;
 using Dapper;
 
@@ -83,14 +85,23 @@ public class UserRepository : BaseRepository, IUserRepository
         }
     }
 
-    public Task<IList<UserViewModel>> GetAllAsync(PaginationParams @params)
+    public async Task<User?> GetByIdAsync(long id)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task<User> GetByIdAsync(long id)
-    {
-        throw new NotImplementedException();
+        try
+        {
+            await _connection.OpenAsync();
+            string query = $"SELECT * FROM users where id=@Id";
+            var result = await _connection.QuerySingleAsync<User>(query, new { Id = id });
+            return result;
+        }
+        catch
+        {
+            return null;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
     }
 
     public Task<(int ItemsCount, IList<UserViewModel>)> SearchAsync(string search, PaginationParams @params)
@@ -101,6 +112,28 @@ public class UserRepository : BaseRepository, IUserRepository
     public Task<int> UpdateAsync(long id, User entity)
     {
         throw new NotImplementedException();
+    }
+
+    async Task<IList<User>> IGetAll<User>.GetAllAsync(PaginationParams @params)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+
+            string query = $"SELECT * FROM categories order by id desc " +
+                $"offset {@params.SkipCount()} limit {@params.PageSize}";
+
+            var result = (await _connection.QueryAsync<User>(query)).ToList();
+            return result;
+        }
+        catch
+        {
+            return new List<User>();
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
     }
 }
 

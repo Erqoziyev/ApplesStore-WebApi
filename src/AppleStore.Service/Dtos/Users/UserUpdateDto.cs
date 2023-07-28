@@ -8,7 +8,9 @@ public class UserUpdateDto
 
     public string LastName { get; set; } = string.Empty;
 
-    public string PhoneNumer { get; set; } = string.Empty;
+    public string PhoneNumber { get; set; } = string.Empty;
+
+    public string Password { get; set; } = string.Empty;
 
     public string PassportSeria { get; set; } = string.Empty;
 

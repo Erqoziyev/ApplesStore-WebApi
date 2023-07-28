@@ -6,6 +6,6 @@ using AppleStore.Domain.Entities.Products;
 namespace AppleStore.DataAccess.Interfaces.Products;
 
 public interface IProductRepository : IRepository<Product, ProductViewModel>,
-                 IGetAll<ProductViewModel>, ISearchable<ProductViewModel>
+                 IGetAll<Product>, ISearchable<ProductViewModel>
 {
 }
