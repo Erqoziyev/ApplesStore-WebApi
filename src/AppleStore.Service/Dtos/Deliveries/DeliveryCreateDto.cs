@@ -15,8 +15,6 @@ public class DeliveryCreateDto
 
     public bool IsMale { get; set; }
 
-    public DateOnly BirthDate { get; set; }
-
     public string Region { get; set; } = string.Empty;
 
     public IFormFile Avatar { get; set; }

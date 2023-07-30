@@ -11,5 +11,7 @@ public class ProductUpdateDto
 
     public double Price { get; set; }
 
+    public string Color { get; set; } = string.Empty;
+
     public string Description { get; set; } = string.Empty;
 }

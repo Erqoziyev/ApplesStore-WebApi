@@ -36,8 +36,8 @@ public class DeliveryRepository : BaseRepository, IDeliveryRepository
         {
             await _connection.OpenAsync();
             string query = "INSERT INTO public.deliveries" +
-                "(first_name, last_name, phone_number, passport_seria, is_male, birth_date, region, password_hash, salt, image_path, created_at, updated_at)" +
-                "VALUES (@FirstName, @LastName, @PhoneNumber, @PassportSeria, @IsMale, @BirthDate, @Region, @PasswordHash, @Salt, @ImagePath, @CreatedAt, @UpdatedAt);";
+                "(first_name, last_name, phone_number, passport_seria, is_male, region, password_hash, salt, image_path, created_at, updated_at)" +
+                "VALUES (@FirstName, @LastName, @PhoneNumber, @PassportSeria, @IsMale, @Region, @PasswordHash, @Salt, @ImagePath, @CreatedAt, @UpdatedAt);";
 
             var result = await _connection.ExecuteAsync(query, entity);
             return result;
@@ -122,9 +122,9 @@ public class DeliveryRepository : BaseRepository, IDeliveryRepository
         try
         {
             await _connection.OpenAsync();
-            string query = $"UPDATE public.deliveries" +
-                           $"SET first_name=@FirstName, last_name=@LastName, phone_number=@PhoneNumber, passport_seria=@PassportSeria, is_male=@IsMale, birth_date=@BirthDate, region=@Region, password_hash=@PasswordHash, salt=@Salt, image_path=@ImagePath, created_at=CreatedAt, updated_at=UpdatedAt" +
-                           $"WHERE id = @Id;";
+            string query = $"UPDATE public.deliveries " +
+                           $"SET first_name=@FirstName, last_name=@LastName, phone_number=@PhoneNumber, passport_seria=@PassportSeria, is_male=@IsMale, region=@Region, password_hash=@PasswordHash, salt=@Salt, image_path=@ImagePath, created_at=@CreatedAt, updated_at=@UpdatedAt " +
+                           $"WHERE id={id};";
 
             var result = await _connection.ExecuteAsync(query, entity);
             return result;

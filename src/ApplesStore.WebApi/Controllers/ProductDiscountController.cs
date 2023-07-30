@@ -63,7 +63,7 @@ public class ProductDiscountController : ControllerBase
     }
 
 
-    [HttpDelete("{productDiscount}")]
+    [HttpDelete("{productDiscountId}")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteAsync(long productDiscountId)
         => Ok(await _service.DeleteAsync(productDiscountId));

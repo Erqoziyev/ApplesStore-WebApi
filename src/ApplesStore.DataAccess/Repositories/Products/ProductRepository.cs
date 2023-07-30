@@ -1,8 +1,12 @@
 ﻿using AppleStore.DataAccess.Interfaces.Products;
 using AppleStore.DataAccess.Utils;
 using AppleStore.DataAccess.ViewModels.Products;
+using AppleStore.Domain.Entities.Categories;
 using AppleStore.Domain.Entities.Products;
 using Dapper;
+using System.Diagnostics;
+using System.Drawing;
+using System.Xml.Linq;
 
 namespace AppleStore.DataAccess.Repositories.Products;
 
@@ -32,8 +36,8 @@ public class ProductRepository : BaseRepository, IProductRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "INSERT INTO public.products(category_id, price, name, image_path, create_at, update_at, description) " +
-                "VALUES (@CategoryId, @Price, @Name, @ImagePath, @CreateAt, @UpdateAt, @Description);";
+            string query = "INSERT INTO public.products(category_id, name, image_path, color, price, description, created_at, updated_at)" +
+                           "VALUES(@CategoryId, @Name, @ImagePath, @Color, @Price, @Description, @CreatedAt, @UpdatedAt); ";
 
             return await _connection.ExecuteAsync(query, entity);
         }
@@ -113,7 +117,7 @@ public class ProductRepository : BaseRepository, IProductRepository
         {
             await _connection.OpenAsync();
             string query = "UPDATE public.products " +
-                            "SET  name = @Name, description = @Description, image_path = @ImagePath, price = @Price,  update_at = @UpdateAt" +
+                            "SET  name = @Name, description = @Description, color = @Color, image_path = @ImagePath, price = @Price,  updated_at = @UpdatedAt" +
                            $" WHERE id = {id};";
             var result = await _connection.ExecuteAsync(query, entity);
             return result;

@@ -16,8 +16,6 @@ public class UserUpdateDto
 
     public bool IsMale { get; set; }
 
-    public DateTime  BirthDate { get; set; }
-
     public string Region { get; set; } = string.Empty;
 
     public IFormFile? Image { get; set; }

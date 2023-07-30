@@ -29,7 +29,6 @@ public class DeliveryService : IDeliveryService
         delivery.PhoneNumber = dto.PhoneNumber;
         delivery.PassportSeria = dto.PassportSeriaNumber;
         delivery.Region = dto.Region;
-        delivery.BirthDate = dto.BirthDate;
         delivery.IsMale = dto.IsMale;
         delivery.ImagePath = ImagePath;
         delivery.CreatedAt = delivery.UpdatedAt = TimeHelper.GetDateTime();
@@ -73,7 +72,6 @@ public class DeliveryService : IDeliveryService
         delivery.PhoneNumber = dto.PhoneNumber;
         delivery.PassportSeria = dto.PassportSeriaNumber;
         delivery.Region = dto.Region;
-        delivery.BirthDate = dto.BirthDate;
         delivery.IsMale = dto.IsMale;
 
         if (dto.Avatar is not null)

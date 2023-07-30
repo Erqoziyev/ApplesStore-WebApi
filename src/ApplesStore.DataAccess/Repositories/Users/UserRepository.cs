@@ -34,8 +34,8 @@ public class UserRepository : BaseRepository, IUserRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "INSERT INTO public.users(first_name, last_name, phone_number, passport_seria, is_male, birth_date, region, password_hash, salt, image_path, identity_role, created_at, updated_at) " +
-                $"VALUES (@FirstName, @LastName, @PhoneNumber, @PassportSeria, @IsMale, '{entity.BirthDate.Year}-{entity.BirthDate.Month}-{entity.BirthDate.Day}', @Region, @PasswordHash, @Salt, @ImagePath, @IdentityRole, @CreatedAt, @UpdatedAt);";
+            string query = "INSERT INTO public.users(first_name, last_name, phone_number, passport_seria, is_male, region, password_hash, salt, image_path, identity_role, created_at, updated_at) " +
+                $"VALUES (@FirstName, @LastName, @PhoneNumber, @PassportSeria, @IsMale, @Region, @PasswordHash, @Salt, @ImagePath, @IdentityRole, @CreatedAt, @UpdatedAt);";
             return await _connection.ExecuteAsync(query, entity);
         }
         catch
@@ -109,9 +109,26 @@ public class UserRepository : BaseRepository, IUserRepository
         throw new NotImplementedException();
     }
 
-    public Task<int> UpdateAsync(long id, User entity)
+    public async Task<int> UpdateAsync(long id, User entity)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _connection.OpenAsync();
+            string query = $"UPDATE public.users " +
+                           $"SET first_name=@FirstName, last_name=@LastName, phone_number=@PhoneNumber, passport_seria=@PassportSeria, is_male=@IsMale, region=@Region, password_hash=@PasswordHash, salt=@Salt, image_path=@ImagePath, identity_role=@IdentityRole, created_at=@CreatedAt, updated_at=@UpdatedAt\r\n " +
+                           $"WHERE id={id};";
+
+            var result = await _connection.ExecuteAsync(query, entity);
+            return result;
+        }
+        catch
+        {
+            return 0;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
     }
 
     async Task<IList<User>> IGetAll<User>.GetAllAsync(PaginationParams @params)

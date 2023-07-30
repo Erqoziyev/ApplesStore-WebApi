@@ -39,6 +39,7 @@ public class ProductService : IProductService
             ImagePath = imagePath,
             Name = dto.Name,
             Price = dto.Price,
+            Color = dto.Color,
             Description = dto.Description,
             CreatedAt = TimeHelper.GetDateTime(),
             UpdatedAt = TimeHelper.GetDateTime()
@@ -82,6 +83,7 @@ public class ProductService : IProductService
         product.Name = dto.Name;
         product.Description = dto.Description;
         product.Price = dto.Price;
+        product.Color = dto.Color;
         product.CategoryId = dto.CategoryId;
 
         if (dto.Image is not null)

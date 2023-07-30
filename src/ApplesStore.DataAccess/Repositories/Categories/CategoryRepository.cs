@@ -114,8 +114,8 @@ public class CategoryRepository : BaseRepository, ICategoryRepository
         {
             await _connection.OpenAsync();
             string query = $"UPDATE public.categories " +
-                $"SET name=@Name, description=@Description, image_path=@ImagePath, created_at=@CreatedAt, updated_at=@UpdatedAt " +
-                $"WHERE id={id};";
+                           $"SET name=@Name, description=@Description, image_path=@ImagePath, created_at=@CreatedAt, updated_at=@UpdatedAt " +
+                           $"WHERE id={id};";
 
             var result = await _connection.ExecuteAsync(query, entity);
             return result;

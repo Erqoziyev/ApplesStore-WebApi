@@ -43,8 +43,8 @@ public class ProductDiscountService : IProductDiscountService
 
     public async Task<bool> DeleteAsync(long productDiscountId)
     {
-        var category = await _repository.GetByIdAsync(productDiscountId);
-        if (category == null) throw new ProductNotFoundException();
+        var discount = await _repository.GetByIdAsync(productDiscountId);
+        if (discount == null) throw new ProductNotFoundException();
 
         var dbResult = await _repository.DeleteAsync(productDiscountId);
         return dbResult > 0;
