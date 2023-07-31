@@ -1,2 +1,0 @@
-# AppleStore-WebApi
-AppleStore 

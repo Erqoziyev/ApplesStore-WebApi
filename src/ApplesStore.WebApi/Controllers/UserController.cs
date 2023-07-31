@@ -2,6 +2,7 @@
 using AppleStore.Service.Dtos.Users;
 using AppleStore.Service.Interfaces.Users;
 using AppleStore.Service.Validators.Dtos.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,12 +23,14 @@ namespace AppleStore.WebApi.Controllers
 
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
         {
             return Ok(await _userService.GetAllAsync(new PaginationParams(page, maxPageSize)));
         }
 
         [HttpGet("{userId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetByIdAsync(long userId)
         {
             return Ok(await _userService.GetByIdAsync(userId));
@@ -35,12 +38,14 @@ namespace AppleStore.WebApi.Controllers
         }
 
         [HttpGet("count")]
+        [AllowAnonymous]
         public async Task<IActionResult> CountAsync()
         {
             return Ok(await _userService.CountAsync());
         }
 
         [HttpPut("{userId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> UpdateAsync(long userId, [FromForm] UserUpdateDto userUpdateDto)
         {
             var updateValidator = new UserUpdateValidator();
@@ -50,6 +55,7 @@ namespace AppleStore.WebApi.Controllers
         }
 
         [HttpDelete("{userId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> DeleteAsync(long userId)
         {
             return Ok(await _userService.DeleteAsync(userId));
